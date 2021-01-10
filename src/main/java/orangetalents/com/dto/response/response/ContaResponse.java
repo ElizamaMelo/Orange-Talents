@@ -12,7 +12,7 @@ import lombok.Setter;
 public class ContaResponse {
 
     private Long id;
-    private String name;
+    private String nome;
     private String email;
 
 }

@@ -1,13 +1,15 @@
 package orangetalents.com.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
@@ -27,18 +29,13 @@ public class Conta {
     @Column(name = "email", length = 60, unique = true)
     private String email;
 
-    @NotNull
+    @NotBlank
+    @CPF
     @Column(name = "cpf", length = 11, unique = true)
-    private Long cpf;
+    private String cpf;
 
+    @JsonFormat(pattern="dd/MM/yyyy")
     @NotNull
     @Column(name = "data_nascimento")
-    private String dataNascimento;
-
-    public Conta(String nome, Long cpf, String email, String dataNascimento) {
-        this.nome = nome;
-        this.cpf = cpf;
-        this.email = email;
-        this.dataNascimento = dataNascimento;
-    }
+    private LocalDate dataNascimento;
 }

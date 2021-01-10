@@ -15,16 +15,12 @@ import javax.validation.Valid;
 public class ContaController {
 
     @Autowired
-    private final ContaService contaService;
-
-    public ContaController(ContaService contaService) {
-        this.contaService = contaService;
-    }
+    private ContaService service;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ContaResponse create(@Valid @RequestBody ContaRequest request) throws Exception {
-        return contaService.createAccount(request);
+    public ContaResponse create(@Valid @RequestBody ContaRequest request) {
+        return service.create(request);
 
     }
 

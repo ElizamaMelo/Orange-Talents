@@ -2,6 +2,8 @@ package orangetalents.com.service;
 
 import orangetalents.com.dto.response.request.ContaRequest;
 import orangetalents.com.dto.response.response.ContaResponse;
+import orangetalents.com.enums.ContaError;
+import orangetalents.com.exception.ContaException;
 import orangetalents.com.mapper.ContaMapper;
 import orangetalents.com.model.Conta;
 import orangetalents.com.repository.ContaRepository;
@@ -13,22 +15,37 @@ import org.springframework.stereotype.Service;
 public class ContaService {
 
     @Autowired
-    private final ContaRepository contaRepository;
+    private ContaRepository repository;
 
     @Autowired
-    private final ContaMapper contaMapper;
+    private ContaMapper mapper;
 
-    public ContaService(ContaRepository contaRepository, ContaMapper contaMapper) {
-        this.contaRepository = contaRepository;
-        this.contaMapper = contaMapper;
+    public ContaResponse create(ContaRequest request) {
+
+        existsByEmail(request.getEmail());
+        existsByCpf(request.getCpf());
+
+        Conta conta = Conta.builder()
+                .nome(request.getNome())
+                .cpf(request.getCpf())
+                .email(request.getEmail())
+                .dataNascimento(request.getDataNascimento())
+                .build();
+
+        return mapper.toResponse(repository.save(conta));
     }
 
-    public ContaResponse createAccount(ContaRequest request) throws Exception {
-        try {
-            Conta conta = new Conta(request.getNome(), request.getCpf(), request.getEmail(), request.getDataNascimento());
-            return contaMapper.toResponse(contaRepository.save(conta));
-        } catch (Exception e) {
-            throw new Exception("A server error has occurred.", e);
+    private void existsByEmail(String email) {
+        boolean existEmail = repository.existsByEmail(email);
+        if (existEmail) {
+            throw new ContaException(ContaError.EMAIL_ALREADY_EXISTS.getError());
+        }
+    }
+
+    private void existsByCpf(String cpf) {
+        boolean existCPF = repository.existsByCpf(cpf);
+        if (existCPF) {
+            throw new ContaException(ContaError.CPF_ALREADY_EXISTS.getError());
         }
     }
 
