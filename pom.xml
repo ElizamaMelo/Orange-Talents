@@ -47,11 +47,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>orangetalents.com.</groupId>
-			<artifactId>Orange-Talents</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
