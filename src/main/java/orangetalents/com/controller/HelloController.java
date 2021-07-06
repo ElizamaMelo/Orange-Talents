@@ -25,6 +25,7 @@ public class HelloController {
         return new ResponseEntity<>(environmentMsg, HttpStatus.OK);
     }
 
+
     @GetMapping("/status")
     public ResponseEntity<String> status() {
         return new ResponseEntity<>("UP!!!", HttpStatus.OK);
